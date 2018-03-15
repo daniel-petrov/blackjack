@@ -31,22 +31,19 @@ def deal(deck, dealer, player, pause=False):
             break
 
     # dealer
-    while deck.cards_left() != 0:
+    while dealer.score() < player.score():
         card = deck.next_card()
         dealer.take_card(card)
 
         print('\nDealer:')
         dealer.show_position()
 
-        if dealer.score() > 21:
-            print('Dealer is busted! You won!')
-            return
-
-        if dealer.score() >= 18:
-            break
-
         if pause:
             sleep(2)
+
+    if dealer.score() > 21:
+        print('\nDealer is busted - you won!')
+        return
 
     if player.score() > dealer.score():
         print('\nYou won!')
@@ -135,9 +132,7 @@ def test_strategy(strategy, num_of_games):
     return results
 
 
-if __name__ == '__main__':
-
-    # play()
+def auto_play():
     thresholds = [14, 15, 16, 17, 18, 19, 20]
 
     num_of_games = 100000
@@ -155,3 +150,10 @@ if __name__ == '__main__':
         win_percent = total_wins * 100 / num_of_games
 
         print('Winning percent: {}%'.format(win_percent))
+
+
+if __name__ == '__main__':
+
+    # play()
+
+    auto_play()
