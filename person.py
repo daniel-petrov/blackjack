@@ -31,5 +31,5 @@ class Person:
         print('Score:')
         print(self.score())
 
-    def drop_card(self):
+    def drop_cards(self):
         self.cards = []

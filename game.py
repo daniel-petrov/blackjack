@@ -56,36 +56,6 @@ def deal(deck, dealer, player, pause=False):
     return
 
 
-def auto_deal(deck, dealer, player, strategy, dealer_theshold):
-
-    # player
-    player.take_card(deck.next_card())
-    player.take_card(deck.next_card())
-
-    while strategy.take_new_card(player):
-        player.take_card(deck.next_card())
-
-    # get out busted player
-    if player.score() > 21:
-        return 'dealer'
-
-    # dealer
-    dealer.take_card(deck.next_card())
-    dealer.take_card(deck.next_card())
-
-    while dealer.score() < player.score() and dealer.score() < 21:
-        dealer.take_card(deck.next_card())
-
-    # define winner
-    if dealer.score() > 21:
-        return 1
-    if player.score() > dealer.score():
-        return 1
-    if player.score() == dealer.score():
-        return 0
-    return 0
-
-
 def play():
 
     player_name = raw_input('Hi there!\nWhat\'s your name: ')
@@ -104,8 +74,8 @@ def play():
     while game_on:
 
         deck = get_new_deck()
-        player.drop_card()
-        dealer.drop_card()
+        player.drop_cards()
+        dealer.drop_cards()
 
         deal(deck=deck, dealer=dealer, player=player, pause=True)
 
@@ -115,37 +85,54 @@ def play():
     print('\nIt was good to see you here {}, good bye'.format(player.name))
 
 
-def test_strategy(strategy, num_of_games, dealer_threshold):
+def auto_deal(deck, dealer, player, strategy):
+
+    # player take 2 cards
+    player.take_card(deck.next_card())
+    player.take_card(deck.next_card())
+
+    while strategy.take_new_card(player):
+        player.take_card(deck.next_card())
+
+    # get out busted player
+    if player.score() > 21:
+        return 0
+
+    # dealer take 2 cards
+    dealer.take_card(deck.next_card())
+    dealer.take_card(deck.next_card())
+
+    while dealer.score() < player.score() and dealer.score() < 21:
+        dealer.take_card(deck.next_card())
+
+    # define winner
+    if dealer.score() > 21:
+        return 1
+    if player.score() > dealer.score():
+        return 1
+    return 0
+
+
+def test_strategy(strategy, num_of_games):
 
     player = Person('Player')
-    player_results = []
     dealer = Person('Dealer')
-    dealer_results = []
+    results = []
 
     while num_of_games > 0:
 
         deck = get_new_deck()
 
-        player.drop_card()
-        dealer.drop_card()
+        player.drop_cards()
+        dealer.drop_cards()
 
-        winner = auto_deal(deck, dealer, player, strategy, dealer_threshold)
-
-        if winner == 'player':
-            player_results.append(1)
-            dealer_results.append(0)
-        elif winner == 'dealer':
-            dealer_results.append(1)
-            player_results.append(0)
-        else:
-            dealer_results.append(0)
-            player_results.append(0)
+        # final_result is 1 in case of a win and 0 in case of loss or draw
+        final_result = auto_deal(deck, dealer, player, strategy)
+        results.append(final_result)
 
         num_of_games -= 1
 
-    return (dealer_results, player_results)
-
-
+    return results
 
 
 if __name__ == '__main__':
@@ -155,39 +142,16 @@ if __name__ == '__main__':
 
     num_of_games = 100000
 
-    for dealer_threshold in thresholds:
+    for threshold in thresholds:
 
-        for player_threshold in thresholds:
+        strategy = Strategy(score=threshold)
 
-            strategy = Strategy(score=player_threshold)
+        results = test_strategy(strategy=strategy,
+                                num_of_games=num_of_games)
 
-            player_wins, dealer_wins = test_strategy(strategy=strategy,
-                                                     num_of_games=num_of_games,
-                                                     dealer_threshold=dealer_threshold)
+        print('\nPlayer threshold: {}'.format(threshold))
 
-            # print('\nPlayer: {}'.format(player_wins))
-            # print('Dealer: {}'.format(dealer_wins))
+        total_wins = sum(results)
+        win_percent = total_wins * 100 / num_of_games
 
-            print('\n\nDealer threshold: {}'.format(dealer_threshold))
-            print('Player threshold: {}'.format(player_threshold))
-
-            # print('\nPlayer wins: {}'.format(sum(player_wins)))
-            # print('Dealer wins: {}'.format(sum(dealer_wins)))
-
-            player_total = sum(player_wins)
-            dealer_total = sum(dealer_wins)
-
-            # winner = 'Player' if player_total > dealer_total else 'Dealer'
-
-            # if player_total > dealer_total:
-            #     winner = 'Player'
-            #     percent = player_total * 100 / (player_total + dealer_total)
-            # else:
-            #     winner = 'Dealer'
-            #     percent = dealer_total * 100 / (player_total + dealer_total)
-            #
-            # print('\nWinner: {}'.format(winner))
-            # print('Percent: {}%'.format(percent))
-
-            win_percent = dealer_total * 100 / num_of_games
-            print('Winning percent: {}%'.format(win_percent))
+        print('Winning percent: {}%'.format(win_percent))
