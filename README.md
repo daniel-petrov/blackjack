@@ -11,7 +11,7 @@ The game could be played in two modes:
  
  Every game starts with a brand new shuffled deck. As far as I could see, this is the most generic scenario that doesn't give any advantages in counting cards and relies on a pure statistical data collection.
  
- The game could be started by running ```game.py``` 
+ The game could be played from command line by running ```game.py``` 
  
  
 
