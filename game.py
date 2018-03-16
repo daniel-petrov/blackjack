@@ -132,10 +132,9 @@ def test_strategy(strategy, num_of_games):
     return results
 
 
-def auto_play():
-    thresholds = [14, 15, 16, 17, 18, 19, 20]
+def auto_play(num_of_games):
 
-    num_of_games = 100000
+    thresholds = [14, 15, 16, 17, 18, 19, 20]
 
     for threshold in thresholds:
 
@@ -154,6 +153,14 @@ def auto_play():
 
 if __name__ == '__main__':
 
-    # play()
+    choice = raw_input('Would you like Manual or Auto game? {m/a): ')
 
-    auto_play()
+    if choice[:1].lower() == 'm':
+        play()
+    else:
+        num_of_games = raw_input('Please, enter the numnber of games you\'d like to simulate: ')
+        try:
+            nog = int(num_of_games)
+            auto_play(num_of_games=nog)
+        except:
+            print('Sorry, {} is not a number, good bye'.format(num_of_games))
