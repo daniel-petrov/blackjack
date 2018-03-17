@@ -13,7 +13,7 @@ class Deck:
         #         card = Card(suit, rank)
         #         self.deck.append(card)
 
-        # do same as avove using list comprehension
+        # do the same what's above using list comprehension
         self.deck = [Card(suit=i, rank=j) for i in self.suits for j in self.ranks]
         
         # print([i.display() for i in self.deck])

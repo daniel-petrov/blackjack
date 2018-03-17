@@ -47,6 +47,8 @@ def deal(deck, dealer, player, pause=False):
 
     if player.score() > dealer.score():
         print('\nYou won!')
+    elif player.score() == dealer.score():
+        print('\nIt\'s a draw')
     else:
         print('\nYou lost...')
 
@@ -58,8 +60,8 @@ def play():
     player_name = raw_input('Hi there!\nWhat\'s your name: ')
     print('Hello {}, it\'s good to see you here!'.format(player_name))
 
-    reply = raw_input('Would you like to play Black Jack? (y/n) ')
-    game_on = reply[:1].lower() == 'y'
+    reply = raw_input('Would you like to play Blackjack? (y/n) ')
+    game_on = reply == 'y'
 
     if not game_on:
         print('Thank you for visiting us {}, good bye'.format(player_name))
@@ -77,7 +79,7 @@ def play():
         deal(deck=deck, dealer=dealer, player=player, pause=True)
 
         reply = raw_input('\nWould you like to play again? (y/n): ')
-        game_on = reply[:1].lower() == 'y'
+        game_on = reply == 'y'
 
     print('\nIt was good to see you here {}, good bye'.format(player.name))
 
@@ -107,6 +109,8 @@ def auto_deal(deck, dealer, player, strategy):
         return 1
     if player.score() > dealer.score():
         return 1
+    if player.score() == dealer.score():
+        return 0.5
     return 0
 
 
@@ -138,7 +142,7 @@ def auto_play(num_of_games):
 
     for threshold in thresholds:
 
-        strategy = Strategy(score=threshold)
+        strategy = Strategy(threshold=threshold)
 
         results = test_strategy(strategy=strategy,
                                 num_of_games=num_of_games)
@@ -155,12 +159,16 @@ if __name__ == '__main__':
 
     choice = raw_input('Would you like Manual or Auto game? {m/a): ')
 
-    if choice[:1].lower() == 'm':
+    if choice == 'm':
         play()
     else:
         num_of_games = raw_input('Please, enter the numnber of games you\'d like to simulate: ')
+
         try:
             nog = int(num_of_games)
             auto_play(num_of_games=nog)
-        except:
+
+        except Exception as e:
             print('Sorry, {} is not a number, good bye'.format(num_of_games))
+            print(e.message)
+    exit(0)
