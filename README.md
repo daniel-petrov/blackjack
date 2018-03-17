@@ -1,6 +1,6 @@
-# BlackJack Strategy Tester
+# Blackjack Strategy Tester
 
-This project is an attempt to test some simple strategies for playing Black Jack.
+This project is an attempt to test some simple strategies for playing Blackjack.
 
 The game has to participants, the Player and the Dealer and it could be played in two modes:
  
