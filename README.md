@@ -18,7 +18,7 @@ So far after running 100,000 games I've got the following results:
 |__Winnings__|40.95%|42.58%|43.54%|43.21%|41.27%|37.41%|30.41%|
  
 
-This means that if the Player relies only on a max threshold, in the long run there is no chance to win the Dealer. In other words, this is not a winning strategy.  
+If the logic in my coding is correct, this means that if the Player relies only on a max threshold, in the long run there is no chance to win the Dealer. In other words, this is not a winning strategy.  
 
 
 The game could be played from command line by running ```game.py```
