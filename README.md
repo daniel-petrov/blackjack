@@ -20,5 +20,6 @@ So far after running 100,000 games I've got the following results:
 
 If the logic in my coding is correct, this means that if the Player relies only on a max threshold, in the long run there is no chance to win the Dealer. In other words, this is not a winning strategy.  
 
+(more strategies to be added...)
 
 The game could be played from command line by running ```game.py```
